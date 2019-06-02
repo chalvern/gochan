@@ -22,10 +22,10 @@ func TestGoChan(t *testing.T) {
 	assert.NotNil(t, gc)
 
 	t.Run("startAndEnd", func(t *testing.T) {
-		go gc.start()
 		a := 0
-		gc.tasksChan <- func() {
+		gc.tasksChan <- func() error {
 			a = 100
+			return nil
 		}
 
 		time.Sleep(time.Second)
