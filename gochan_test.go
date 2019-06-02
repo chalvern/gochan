@@ -11,7 +11,6 @@ import (
 
 func TestMain(m *testing.M) {
 	fmt.Println("tesing begin...")
-	SetLogger(&defaultLogger{})
 	resultCode := m.Run()
 	fmt.Println("testing end.")
 	os.Exit(resultCode)

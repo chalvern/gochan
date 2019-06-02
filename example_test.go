@@ -6,14 +6,19 @@ import (
 	"time"
 
 	"github.com/chalvern/gochan"
+	"github.com/stretchr/testify/assert"
 )
 
 type Manager struct {
 	dispatcher *gochan.Dispatcher
 }
 
-func (m *Manager) Dispatch(objID int, task gochan.TaskFunc) {
-	m.dispatcher.Dispatch(objID, task)
+func (m *Manager) Dispatch(objID int, task gochan.TaskFunc) error {
+	return m.dispatcher.Dispatch(objID, task)
+}
+
+func (m *Manager) Close() {
+	m.dispatcher.Close()
 }
 
 func TestDispatcher(t *testing.T) {
@@ -27,25 +32,34 @@ func TestDispatcher(t *testing.T) {
 	task1 := func() error {
 		return errors.New("task 1")
 	}
-	manager.Dispatch(objID, task1)
+	err := manager.Dispatch(objID, task1)
+	assert.Nil(t, err)
 
 	objID = 2
 	task2 := func() error {
 		return errors.New("task 2")
 	}
-	manager.Dispatch(objID, task2)
+	err = manager.Dispatch(objID, task2)
+	assert.Nil(t, err)
 
 	objID = 3
 	task3 := func() error {
 		return errors.New("task 3")
 	}
-	manager.Dispatch(objID, task3)
+	err = manager.Dispatch(objID, task3)
+	assert.Nil(t, err)
 
 	objID = 4
 	task4 := func() error {
 		return errors.New("task 4")
 	}
-	manager.Dispatch(objID, task4)
+	err = manager.Dispatch(objID, task4)
+	assert.Nil(t, err)
 
 	time.Sleep(time.Second)
+
+	manager.Close()
+	err = manager.Dispatch(objID, task4)
+	assert.NotNil(t, err)
+
 }
