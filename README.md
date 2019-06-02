@@ -1,6 +1,6 @@
 # gochan
 
-[Chinese doc](./README-zh.md)
+[中文说明文档](./README-zh.md)
 
 ## background
 
@@ -68,4 +68,4 @@ event ->              -> buffer-channel -> goroutine
 
 ## example
 
-you can find example in [example_test.go].
+you can find example in [example_test.go](./example_test.go).
