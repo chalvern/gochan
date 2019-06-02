@@ -7,10 +7,10 @@
 
 比如，一个订单的支付与货物发货，两个事件是需要保序的；但是不同的订单之间又是可以并发执行；其实就是实现一个微型的按特定主题分类的 pub-sub（发布-订阅）系统。以订单为例，可以根据订单单号，把相同单号的事件推送到同一个队列（channel），一个特定的执行器（goroutine）来消费执行这个队列中的事件，如此平行扩展多个类似的组合，实现并发。
 
-
-## 示意
-
 ### 平常的设计
+
+通过定义一个带缓冲的 channel 变量接收某种事件，然后通过一个专用的 goroutine 消费执行这个 channel 中的事件。
+
 ```bash
 
 event ->
@@ -48,3 +48,7 @@ event --> dispatcher -> buffer-channel -> goroutine
 event ->              -> buffer-channel -> goroutine
 
 ```
+
+## 使用示例
+
+可以查看 [example_test.go] 文件查看使用示例。
