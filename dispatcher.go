@@ -2,6 +2,7 @@ package gochan
 
 import (
 	"errors"
+	"math/rand"
 	"sync/atomic"
 )
 
@@ -44,6 +45,10 @@ func (d *Dispatcher) Dispatch(objID int, task TaskFunc) (err error) {
 		}
 	}()
 
+	// dispatch at random if objID is less than 0
+	if objID < 0 {
+		objID = rand.Intn(d.gcNum)
+	}
 	// dispatching to closed channel is limited
 	if atomic.LoadInt32(&d.status) == dispatcherStatusClosed {
 		return errors.New("dispatcher closed")

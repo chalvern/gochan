@@ -2,6 +2,7 @@ package gochan_test
 
 import (
 	"errors"
+	"strconv"
 	"testing"
 	"time"
 
@@ -28,38 +29,27 @@ func TestDispatcher(t *testing.T) {
 		dispatcher: gochan.NewDispatcher(gochanNum, bufferNum),
 	}
 
-	objID := 1
-	task1 := func() error {
-		return errors.New("task 1")
+	for i := range make([]int, 6) {
+		objID := i
+		task1 := func() error {
+			return errors.New("task " + strconv.Itoa(objID))
+		}
+		err := manager.Dispatch(objID, task1)
+		assert.Nil(t, err)
 	}
-	err := manager.Dispatch(objID, task1)
-	assert.Nil(t, err)
-
-	objID = 2
-	task2 := func() error {
-		return errors.New("task 2")
+	for _ = range make([]int, 20) {
+		objID := -1
+		taskM3 := func() error {
+			return errors.New("task " + strconv.Itoa(objID))
+		}
+		err := manager.Dispatch(objID, taskM3)
+		assert.Nil(t, err)
 	}
-	err = manager.Dispatch(objID, task2)
-	assert.Nil(t, err)
-
-	objID = 3
-	task3 := func() error {
-		return errors.New("task 3")
-	}
-	err = manager.Dispatch(objID, task3)
-	assert.Nil(t, err)
-
-	objID = 4
-	task4 := func() error {
-		return errors.New("task 4")
-	}
-	err = manager.Dispatch(objID, task4)
-	assert.Nil(t, err)
 
 	time.Sleep(time.Second)
 
 	manager.Close()
-	err = manager.Dispatch(objID, task4)
+	err := manager.Dispatch(1, func() error { return nil })
 	assert.NotNil(t, err)
 
 }

@@ -2,7 +2,6 @@ package main
 
 import (
 	"errors"
-	"math/rand"
 	"time"
 
 	"github.com/chalvern/gochan"
@@ -10,15 +9,12 @@ import (
 )
 
 type Manager struct {
-	gochanNum  int
-	bufferNum  int
+	gochanNum  int // number of goroutine-channel pair
+	bufferNum  int // number of channel buffer in each goroutine-channel pair
 	dispatcher *gochan.Dispatcher
 }
 
 func (m *Manager) Dispatch(objID int, task gochan.TaskFunc) error {
-	if objID < 0 {
-		objID = rand.Intn(m.gochanNum)
-	}
 	return m.dispatcher.Dispatch(objID, task)
 }
 
@@ -30,6 +26,7 @@ func main() {
 	logger, _ := zap.NewDevelopment()
 	sugar := logger.Sugar()
 	gochan.SetLogger(sugar)
+
 	gochanNum := 3
 	bufferNum := 10
 	manager := Manager{
