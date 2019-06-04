@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/chalvern/gochan"
+	"go.uber.org/zap"
 )
 
 type Manager struct {
@@ -26,6 +27,9 @@ func (m *Manager) Close() {
 }
 
 func main() {
+	logger, _ := zap.NewDevelopment()
+	sugar := logger.Sugar()
+	gochan.SetLogger(sugar)
 	gochanNum := 3
 	bufferNum := 10
 	manager := Manager{

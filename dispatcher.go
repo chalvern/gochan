@@ -31,6 +31,7 @@ func NewDispatcher(gochanNum, bufferNum int) *Dispatcher {
 		gc := newGochan(bufferNum)
 		gc.setUUID(index)
 		d.gcs[index] = gc
+		gc.run()
 	}
 	return d
 }

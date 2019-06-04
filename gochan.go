@@ -16,14 +16,16 @@ func newGochan(bufferNum int) *gochan {
 		tasksChan: make(chan TaskFunc, bufferNum),
 		dieChan:   make(chan struct{}),
 	}
-
-	go gc.start()
-
 	return gc
 }
 
 func (gc *gochan) setUUID(uuid int) {
 	gc.uuid = uuid
+}
+
+// run make gochan running
+func (gc *gochan) run() {
+	go gc.start()
 }
 
 // start gochan's goroutine
