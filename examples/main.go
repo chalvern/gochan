@@ -1,9 +1,6 @@
 package main
 
 import (
-	"errors"
-	"time"
-
 	"github.com/chalvern/gochan"
 	"go.uber.org/zap"
 )
@@ -36,9 +33,16 @@ func main() {
 	}
 
 	objID := 1
+	myCh := make(chan struct{})
+	myNumber := 2016
 	task1 := func() error {
-		return errors.New("task 1")
+		myNumber = 2019
+		myCh <- struct{}{}
+		return nil
 	}
 	manager.Dispatch(objID, task1)
-	time.Sleep(time.Second)
+	<-myCh
+	if myNumber != 2019 {
+		panic("myNumber should be 2019")
+	}
 }

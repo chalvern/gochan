@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"os"
 	"testing"
-	"time"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -18,16 +17,19 @@ func TestMain(m *testing.M) {
 
 func TestGoChan(t *testing.T) {
 	gc := newGochan(1)
+	gc.run()
 	assert.NotNil(t, gc)
 
 	t.Run("startAndEnd", func(t *testing.T) {
 		a := 0
+		myCh := make(chan struct{})
 		gc.tasksChan <- func() error {
 			a = 100
+			myCh <- struct{}{}
 			return nil
 		}
 
-		time.Sleep(time.Second)
+		<-myCh
 		assert.Equal(t, 100, a)
 
 		gc.dieChan <- struct{}{}
