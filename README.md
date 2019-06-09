@@ -68,4 +68,4 @@ event ->              -> buffer-channel -> goroutine
 
 ## example
 
-you can also find example in [examples](./examples).
+you can find example in [examples](./examples).
