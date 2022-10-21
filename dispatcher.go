@@ -22,7 +22,7 @@ type Dispatcher struct {
 // @gochanNum the number of gochan
 // @bufferNum the buffer number of chan in each gochan
 func NewDispatcher(gochanNum, bufferNum int) *Dispatcher {
-	logger.Infof("%d gochans and %d bufferNum chan buffer", gochanNum, bufferNum)
+	logger.Infof("%d gochans starting with %d bufferNum chan buffer for each", gochanNum, bufferNum)
 	d := &Dispatcher{
 		gcNum:  gochanNum,
 		gcs:    make([]*gochan, gochanNum),

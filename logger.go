@@ -5,6 +5,8 @@ import (
 )
 
 type gochanLogger interface {
+	Debug(args ...interface{})
+	Debugf(format string, args ...interface{})
 	Info(v ...interface{})
 	Infof(format string, v ...interface{})
 	Error(v ...interface{})
@@ -19,6 +21,14 @@ func SetLogger(l gochanLogger) {
 }
 
 type defaultLogger struct {
+}
+
+func (dl *defaultLogger) Debug(v ...interface{}) {
+	log.Println(v...)
+}
+
+func (dl *defaultLogger) Debugf(format string, v ...interface{}) {
+	log.Printf(format, v...)
 }
 
 func (dl *defaultLogger) Info(v ...interface{}) {

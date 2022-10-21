@@ -33,7 +33,7 @@ func (gc *gochan) start() {
 	defer func() {
 		logger.Infof("gochan %d ending...", gc.uuid)
 	}()
-	logger.Infof("gochan %d starting...", gc.uuid)
+	logger.Debugf("gochan %d starting...", gc.uuid)
 
 	for {
 		select {
